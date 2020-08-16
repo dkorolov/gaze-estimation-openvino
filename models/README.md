@@ -21,7 +21,7 @@ source bin/activate
 pip install -r <path to project>/requirements.txt
 ```
 ####3. Download the models
-Download pre-trained models from [Intel Model Zoo](https://docs.openvinotoolkit.org/latest/omz_models_intel_index.html) using the [OpenVINO model downloader](https://docs.openvinotoolkit.org/latest/omz_tools_downloader_README.html). We need to download next models:
+Download pre-trained models from Intel model zoo using the OpenVINO model downloader. We need to download next models:
 
 * [Face Detection](https://docs.openvinotoolkit.org/latest/omz_models_intel_face_detection_adas_binary_0001_description_face_detection_adas_binary_0001.html)
 * [Head Pose Estimation](https://docs.openvinotoolkit.org/latest/omz_models_intel_head_pose_estimation_adas_0001_description_head_pose_estimation_adas_0001.html)
