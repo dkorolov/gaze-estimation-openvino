@@ -31,8 +31,13 @@ Download pre-trained models from [Intel Model Zoo](https://docs.openvinotoolkit.
 All models was downloaded to folder ```<path to project>/gaze-estimation-openvino/models ``` Models downloading code:
 
 ```
-cd <path to project>/gaze-estimation-openvino/models
+cd ~/env/openvino_gaze/
+source bin/activate
 
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --help
+
+cd <path to project>/gaze-estimation-openvino/models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions FP32 -o ./models
 
 
 ```
