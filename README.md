@@ -36,14 +36,39 @@ source bin/activate
 
 python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --help
 
-cd <path to project>/gaze-estimation-openvino/models
-python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions FP32 -o ./models
+cd <path to project>/gaze-estimation-openvino
 
+# face-detection-adas-0001 model downloading (FP32, FP16, INT8)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions FP16 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions INT8 -o ./models
+
+# face-detection-adas-binary-0001 model downloading (FP32)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-binary-0001  -o ./models
+
+# landmarks-regression-retail-0009 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name landmarks-regression-retail-0009 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name landmarks-regression-retail-0009 --precisions FP16 -o ./models
+
+# head-pose-estimation-adas-0001 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name head-pose-estimation-adas-0001 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name head-pose-estimation-adas-0001 --precisions FP16 -o ./models
+
+# gaze-estimation-adas-0002 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP16 -o ./models
 
 ```
 
 ## Demo
 *TODO:* Explain how to run a basic demo of your model.
+
+```
+# gaze-estimation-adas-0002 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP16 -o ./models
+
+```
 
 ## Documentation
 *TODO:* Include any documentation that users might need to better understand your project code. For instance, this is a good place to explain the command line arguments that your project supports.
