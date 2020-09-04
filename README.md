@@ -64,9 +64,17 @@ python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.p
 *TODO:* Explain how to run a basic demo of your model.
 
 ```
-# gaze-estimation-adas-0002 model downloading (FP32, FP16)
-python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP32 -o ./models
-python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP16 -o ./models
+python main.py -c config_template.conf
+
+cd ~/env
+cd openvino_gaze
+source bin/activate
+source /opt/intel/openvino/bin/setupvars.sh
+cd ~/gitHub/gaze-estimation-openvino
+# inference video in FP32 mode
+python3 src/main.py -i video -p preferences_FP32.yaml 
+# inference video in FP16 mode
+python3 src/main.py -i video -p preferences_FP16.yaml 
 
 ```
 

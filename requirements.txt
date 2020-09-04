@@ -10,4 +10,5 @@ virtualenv==16.7.9
 ###### Requirements without Version Specifiers ######
 pyyaml
 requests
+opencv-contrib-python
 
