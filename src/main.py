@@ -12,9 +12,6 @@ from facial_landmarks_detection import FacialLandmarksDetection
 from head_pose_estimation import HeadPoseEstimation
 from gaze_estimation import GazeEstimation
 
-MOUSE_MOVE_SCALE = 100
-
-
 
 def get_arg():
     """
@@ -33,15 +30,10 @@ def get_arg():
     parser.add_argument("-pt", "--prob_threshold", type=float, default=0.5,
                         help="Probability threshold for detections filtering"
                         "(0.5 by default)") 
-    parser.add_argument("--print",default=False,
-                        help="Print models output on frame",action="store_true")
-    
+    parser.add_argument("-o","--overlay",default=False,
+                        help="Overlay models output on video",action="store_true")
     parser.add_argument("-m","--mouse_move",default=True,
-                        help="Not move mouse based on gaze estimation output",action="store_true")
-    
-    parser.add_argument("--no_video",default=False,
-                        help="Don't show video window",action="store_true")
-
+                        help="Move mouse based on gaze estimation output",action="store_true")
     return parser.parse_args()
 
 
@@ -53,17 +45,10 @@ def main():
     """
 
     # Logger init
-    logging.basicConfig(
-        level=logging.INFO,
-        format="[%(levelname)s] %(message)s",
-        handlers=[
-            logging.FileHandler("gaze-app.log"),
-            logging.StreamHandler()
-        ])
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
     # Get command line args
     args = get_arg()
-    #print(args)
 
     #Load Preferencies
     with open(args.config_file, "r") as yamlfile:
@@ -141,7 +126,7 @@ def main():
         start_time = time.time()
         fnoutput = face_model.predict(p_frame)
         facedetect_infer_time += time.time() - start_time
-        out_frame,fboxes = face_model.preprocess_output(fnoutput,frame,args.print)
+        out_frame,fboxes = face_model.preprocess_output(fnoutput,frame,args.overlay, args.prob_threshold)
         
         #for each face
         for fbox in fboxes:
@@ -152,30 +137,27 @@ def main():
             start_time = time.time()
             lmoutput = facial_landmarks_model.predict(p_frame)
             landmark_infer_time += time.time() - start_time
-            out_frame,left_eye_point,right_eye_point = facial_landmarks_model.preprocess_output(lmoutput, fbox, out_frame,args.print)
+            out_frame,left_eye_point,right_eye_point = facial_landmarks_model.preprocess_output(lmoutput, fbox, out_frame,args.overlay, args.prob_threshold)
 
             # get head pose estimation
             p_frame  = head_pose_model.preprocess_input(face)
             start_time = time.time()
             hpoutput = head_pose_model.predict(p_frame)
             headpose_infer_time += time.time() - start_time
-            out_frame, headpose_angels = head_pose_model.preprocess_output(hpoutput,out_frame, face,fbox,args.print)
+            out_frame, headpose_angels = head_pose_model.preprocess_output(hpoutput,out_frame, face,fbox,args.overlay, args.prob_threshold)
 
             # get gaze  estimation
-            out_frame, left_eye, right_eye  = gaze_estimation_model.preprocess_input(out_frame,face,left_eye_point,right_eye_point,args.print)
+            out_frame, left_eye, right_eye  = gaze_estimation_model.preprocess_input(out_frame,face,left_eye_point,right_eye_point,args.overlay)
             start_time = time.time()
             geoutput = gaze_estimation_model.predict(left_eye, right_eye, headpose_angels)
             gaze_infer_time += time.time() - start_time
-            out_frame, gazevector = gaze_estimation_model.preprocess_output(geoutput,out_frame,fbox, left_eye_point,right_eye_point,args.print)
+            out_frame, gazevector = gaze_estimation_model.preprocess_output(geoutput,out_frame,fbox, left_eye_point,right_eye_point,args.overlay, args.prob_threshold)
 
-            if(not args.no_video):
-                cv2.imshow('im', out_frame)
+            cv2.imshow('im', out_frame)
             
             if(args.mouse_move):
-                m_x = gazevector[0] * MOUSE_MOVE_SCALE
-                m_y = gazevector[1] * MOUSE_MOVE_SCALE
                 logging.info("mouse move vector : x ={}, y={}".format(gazevector[0], gazevector[1])) 
-                mouse_contr.move(m_x,m_y)
+                mouse_contr.move(gazevector[0], gazevector[1])
             
             #use only first detected face in the frame
             break

@@ -12,7 +12,7 @@ class HeadPoseEstimation(ModelBase):
 
     def predict(self, image):
         '''
-        This method is meant for running predictions on the input image.
+        Method for running Head Pose predictions on the input image.
         '''
         self.exec_net(image)
 
@@ -42,16 +42,9 @@ class HeadPoseEstimation(ModelBase):
 
     def preprocess_output(self, outputs, image, face, facebox, overlay_flag=True, threshold = 0.5):
         '''
-        Before feeding the output of this model to the next model,
-        you might have to preprocess the output. This function is where you can do that.
-
-        Output layer names in Inference Engine format:
-        name: "angle_y_fc", shape: [1, 1] - Estimated yaw (in degrees).
-        name: "angle_p_fc", shape: [1, 1] - Estimated pitch (in degrees).
-        name: "angle_r_fc", shape: [1, 1] - Estimated roll (in degrees).
-
-        Each output contains one float value  (yaw, pitсh, roll).
+        Preprocess data for model inference
         '''
+        
         # Axis of rotation: z
         yaw = outputs['angle_y_fc'][0][0]   
         # Axis of rotation: y

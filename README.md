@@ -1,9 +1,13 @@
 # Computer Pointer Controller
 
-*TODO:* Write a short introduction to your project
+This is a Python Computer Pointer Controller created using Intel's OpenVINO Machine Learning toolkit. The program evaluates the gaze direction and moves the mouse pointer accordingly. It can use video or webcam as input. You can also see the data of the program overlaid on the video.
+
+![Gaze_estimation_test](images/Gaze_estimation_test.png)
+
+You can watch my test video of using this program here [https://www.youtube.com/watch?v=u1jHCieSDFE](https://www.youtube.com/watch?v=u1jHCieSDFE)
 
 ## Project Set Up and Installation
-Project was tested in MacOS. Same set up instruction can be used for Linux, and with some small changes it can works on Windows
+Project was tested in MacOS using CPU. Same set up instruction can be used for Linux, and with some small changes it can works on Windows
 
 ####1. OpenVINO instalation
 Download OpenVINO instalation files from [here](https://docs.openvinotoolkit.org/latest/index.html) and follow original [instructions](https://docs.openvinotoolkit.org/latest/openvino_docs_install_guides_installing_openvino_macos.html)
@@ -61,37 +65,65 @@ python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.p
 ```
 
 ## Demo
-*TODO:* Explain how to run a basic demo of your model.
+Here example how to run a basic demo :
 
 ```
-python main.py -c config_template.conf
-
 cd ~/env
 cd openvino_gaze
 source bin/activate
 source /opt/intel/openvino/bin/setupvars.sh
 cd ~/gitHub/gaze-estimation-openvino
 # inference video in FP32 mode
-python3 src/main.py -i video -p preferences_FP32.yaml 
+python3 src/main.py -i video -c preferences_FP32.yaml --overlay --mouse_move
 # inference video in FP16 mode
-python3 src/main.py -i video -p preferences_FP16.yaml 
+python3 src/main.py -i video -c preferences_FP16.yaml --overlay --mouse_move
 
 ```
 
 ## Documentation
 *TODO:* Include any documentation that users might need to better understand your project code. For instance, this is a good place to explain the command line arguments that your project supports.
 
+
+### Command line arguments
+
+This project supports next command line arguments:
+
+| Argument                 | Description                                                               | 
+| ------------------------ | ------------------------------------------------------------------------- | 
+| -c / --config_file       | Path to Preferences YAML file                                             |  
+| -i / --input             | Input type: 'video' for video file or 'cam' for camera.                   | 
+| -d / --device            | Specify device for inference: CPU, GPU, FPGA or MYRIAD (default CPU)      | 
+| -pt / --prob_threshold   | Probability threshold for detections filtering (0.5 by default)           | 
+| -o / --overlay           | Overlay models output on video.                                           | 
+| -m / --mouse_move        | Move mouse based on gaze estimation output                                | 
+
+Preferences YAML file is created to keep all paths and make command line more simple. It can be created and edited using any text editor. Example of Preferences YAML here:
+
+```
+# preferences
+models:
+    face_detection: ./models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-binary-0001.xml
+    facial_landmarks_detection: ./models/intel/landmarks-regression-retail-0009/FP32/landmarks-regression-retail-0009.xml
+    gaze_estimation: ./models/intel/gaze-estimation-adas-0002/FP32/gaze-estimation-adas-0002.xml
+    head_pose_estimation: ./models/intel/head-pose-estimation-adas-0001/FP32/head-pose-estimation-adas-0001.xml
+video_path: ./bin/demo.mp4
+```
+
+
 ## Benchmarks
-*TODO:* Include the benchmark results of running your model on multiple hardwares and multiple model precisions. Your benchmarks can include: model loading time, input/output processing time, model inference time etc.
+Tests on MacBook Pro on 2.5 GHz Quad-Core Intel Core i7 CPU
+
+| Model       | Load Time FP32   | Load Time FP16 | Inference Time FP32 | Inference Time FP16 |
+|---------------------|--------------|-----------|-------------|-----------|
+|Face Detection       |  	291.1ms   |   NA       | 15.7ms       | NA     |
+|Landmarks Detetion   |  	137.7ms   |   119.4ms  | 0.7ms       | 0.5ms     |  
+|Head Pose Estimation |  	96.8ms    |   103.1m    | 1.7ms       | 1.3ms     |
+|Gaze Estimation      | 	114.7ms   |   113.5ms   | 2.0ms       | 1.6ms     |
+||||||
+
+
 
 ## Results
-*TODO:* Discuss the benchmark results and explain why you are getting the results you are getting. For instance, explain why there is difference in inference time for FP32, FP16 and INT8 models.
-
-## Stand Out Suggestions
-This is where you can provide information about the stand out suggestions that you have attempted.
-
-### Async Inference
-If you have used Async Inference in your code, benchmark the results and explain its effects on power and performance of your project.
-
-### Edge Cases
-There will be certain situations that will break your inference flow. For instance, lighting changes or multiple people in the frame. Explain some of the edge cases you encountered in your project and how you solved them to make your project more robust.
+* Inference time for models with FP32 is larger than FP16 
+* Load time for models with FP32 a bit more than FP16 with some exceptions 
+* unfortunally I can not test models on GPU on my MacBook Pro as Apple stop support NVIDIA GPU drivers

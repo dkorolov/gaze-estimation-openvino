@@ -11,14 +11,11 @@ class FaceDetection(ModelBase):
 
     def predict(self, image):
         '''
-        This method is meant for running predictions on the input image.
+        Method for running Face Detection predictions on the input image.
         '''
         self.exec_net(image)
-
         # Wait for the result
         if self.wait() == 0:
-            # end time of inference
-            #end_time = time.time()
             result = (self.get_output())[self.output_blob]
             return result
 
@@ -41,11 +38,8 @@ class FaceDetection(ModelBase):
 
     def preprocess_output(self, outputs, image, overlay_flag=True, threshold = 0.5):
         '''
-        Before feeding the output of this model to the next model,
-        you might have to preprocess the output. This function is where you can do that.
+        Preprocess data for model inference
         '''
-        # [1, 1, N, 7]
-        # [image_id, label, conf, x_min, y_min, x_max, y_max]
         height = image.shape[0]
         width = image.shape[1]
         faceboxes = []

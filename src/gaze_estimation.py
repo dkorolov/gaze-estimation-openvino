@@ -15,41 +15,19 @@ class GazeEstimation(ModelBase):
         Method for running gaze predictions on the input image.
         '''
         self.exec_net(headpose_angles, left_eye_image,right_eye_image)
-
         # Wait for the result
         if self.wait() == 0:
-            # end time of inference
-            end_time = time.time()
             result = (self.get_output())[self.output_blob]
             return result
 
 
     def preprocess_input(self, frame, face, left_eye_point, right_eye_point, overlay_flag=True):
         '''
-        Before feeding the data into the model for inference,
-        you might have to preprocess it. This function is where you can do that.
-
-       Blob in the format [BxCxHxW] where:
-        B - batch size
-        C - number of channels
-        H - image height
-        W - image width
-        with the name left_eye_image and the shape [1x3x60x60].
-        Blob in the format [BxCxHxW] where:
-        B - batch size
-        C - number of channels
-        H - image height
-        W - image width
-        with the name right_eye_image and the shape [1x3x60x60].
-        Blob in the format [BxC] where:
-        B - batch size
-        C - number of channels
-        with the name head_pose_angles and the shape [1x3].
-
+        Preprocess data for model inference
         '''
-        
-        lefteye_input_shape =  [1,3,60,60] #self.get_input_shape()
-        righteye_input_shape = [1,3,60,60] #self.get_next_input_shape(2)
+        #  get input shapes (docs)
+        lefteye_input_shape =  [1,3,60,60] 
+        righteye_input_shape = [1,3,60,60] 
 
         # crop left eye
         x_center = left_eye_point[0]

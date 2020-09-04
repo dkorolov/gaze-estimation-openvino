@@ -10,8 +10,26 @@ Download pre-trained models from Intel model zoo using the OpenVINO model downlo
 All models was downloaded to folder ```<path to project>/gaze-estimation-openvino/models ``` Models downloading code:
 
 ```
-cd <path to project>/gaze-estimation-openvino/models
+cd ~/env/openvino_gaze/
+source bin/activate
 
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --help
 
+cd <path to project>/gaze-estimation-openvino
+
+# face-detection-adas-binary-0001 model downloading (FP32)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-binary-0001  -o ./models
+
+# landmarks-regression-retail-0009 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name landmarks-regression-retail-0009 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name landmarks-regression-retail-0009 --precisions FP16 -o ./models
+
+# head-pose-estimation-adas-0001 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name head-pose-estimation-adas-0001 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name head-pose-estimation-adas-0001 --precisions FP16 -o ./models
+
+# gaze-estimation-adas-0002 model downloading (FP32, FP16)
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP32 -o ./models
+python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name gaze-estimation-adas-0002 --precisions FP16 -o ./models
 
 ```
