@@ -42,11 +42,6 @@ python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.p
 
 cd <path to project>/gaze-estimation-openvino
 
-# face-detection-adas-0001 model downloading (FP32, FP16, INT8)
-python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions FP32 -o ./models
-python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions FP16 -o ./models
-python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-0001 --precisions INT8 -o ./models
-
 # face-detection-adas-binary-0001 model downloading (FP32)
 python3 /opt/intel/openvino/deployment_tools/tools/model_downloader/downloader.py --name face-detection-adas-binary-0001  -o ./models
 
@@ -81,7 +76,6 @@ python3 src/main.py -i video -c preferences_FP16.yaml --overlay --mouse_move
 ```
 
 ## Documentation
-*TODO:* Include any documentation that users might need to better understand your project code. For instance, this is a good place to explain the command line arguments that your project supports.
 
 
 ### Command line arguments
